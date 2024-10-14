@@ -1,25 +1,43 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:vinove_demo/map_screen.dart';
 import 'package:vinove_demo/members_screen.dart';
-import 'package:vinove_demo/route_screen.dart';
+import 'package:vinove_demo/models/user_data.dart';
 import 'member_location_screen.dart';
 
 
 class MenuScreen extends StatefulWidget {
+  const MenuScreen({super.key});
+
   @override
 
   _MenuScreenState createState() => _MenuScreenState();
 }
 
 class _MenuScreenState extends State<MenuScreen> {
+  UserService userService = UserService();
+  List<LogedInUser> loggedInMembers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchLoggedInUsers();
+  }
+
+  Future<void> fetchLoggedInUsers() async {
+    List<LogedInUser> members = await userService.getLoggedInUsers();
+    setState(() {
+      loggedInMembers = members;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("ATTENDANCE"),
-        backgroundColor: Color(0xff4434A7),
+        title: const Text("ATTENDANCE"),
+        backgroundColor: const Color(0xff4434A7),
         titleSpacing: -8,
         elevation: 0,
       ),
@@ -29,7 +47,7 @@ class _MenuScreenState extends State<MenuScreen> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
-              DrawerHeader(
+              const DrawerHeader(
                 decoration: BoxDecoration(
                   color: Color(0xff4434A7),
                 ),
@@ -44,94 +62,94 @@ class _MenuScreenState extends State<MenuScreen> {
                     ),
                     SizedBox(height: 10),
                     Text(
-                      "Shakshi",
+                      "User Name",
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     Text(
-                      "Shakshi@gmail.com",
+                     "User Email" ,
                       style: TextStyle(color: Colors.white70, fontSize: 14),
                     ),
                   ],
                 ),
               ),
               ListTile(
-                leading: Icon(Icons.timer),
-                title: Text('Timer'),
+                leading: const Icon(Icons.timer),
+                title: const Text('Timer'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.calendar_today),
-                title: Text('Attendance'),
+                leading: const Icon(Icons.calendar_today),
+                title: const Text('Attendance'),
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MenuScreen()));
+                      MaterialPageRoute(builder: (context) => const MenuScreen()));
                 },
               ),
               ListTile(
-                leading: Icon(Icons.pie_chart_outline),
-                title: Text('Activity'),
+                leading: const Icon(Icons.pie_chart_outline),
+                title: const Text('Activity'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.list),
-                title: Text('Timesheet'),
+                leading: const Icon(Icons.list),
+                title: const Text('Timesheet'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.report),
-                title: Text('Report'),
+                leading: const Icon(Icons.report),
+                title: const Text('Report'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.location_city),
-                title: Text('Jobsite'),
+                leading: const Icon(Icons.location_city),
+                title: const Text('Jobsite'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.group),
-                title: Text('Team'),
+                leading: const Icon(Icons.group),
+                title: const Text('Team'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.time_to_leave),
-                title: Text('Time off'),
+                leading: const Icon(Icons.time_to_leave),
+                title: const Text('Time off'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.schedule),
-                title: Text('Schedules'),
+                leading: const Icon(Icons.schedule),
+                title: const Text('Schedules'),
                 onTap: () {},
               ),
-              Divider(),
+              const Divider(),
               ListTile(
-                leading: Icon(Icons.person_add_alt_1),
-                title: Text('Request to join Organization'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: Icon(Icons.lock),
-                title: Text('Change Password'),
+                leading: const Icon(Icons.person_add_alt_1),
+                title: const Text('Request to join Organization'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.logout),
-                title: Text('Logout'),
-                onTap: () {},
-              ),
-              Divider(),
-              ListTile(
-                leading: Icon(Icons.help_outline),
-                title: Text('FAQ & Help'),
+                leading: const Icon(Icons.lock),
+                title: const Text('Change Password'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.privacy_tip),
-                title: Text('Privacy Policy'),
+                leading: const Icon(Icons.logout),
+                title:const Text('Logout'),
+                onTap: () {},
+              ),
+              const Divider(),
+              ListTile(
+                leading:const Icon(Icons.help_outline),
+                title:const Text('FAQ & Help'),
                 onTap: () {},
               ),
               ListTile(
-                leading: Icon(Icons.info_outline),
-                title: Text('Version: 2.10(1)'),
+                leading:const Icon(Icons.privacy_tip),
+                title:const Text('Privacy Policy'),
+                onTap: () {},
+              ),
+              ListTile(
+                leading:const Icon(Icons.info_outline),
+                title:const Text('Version: 2.10(1)'),
                 onTap: () {},
               ),
             ],
@@ -145,47 +163,47 @@ class _MenuScreenState extends State<MenuScreen> {
             child: Container(
               color: Colors.grey.shade200,
               child: Row(children: [
-                SizedBox(
+                const SizedBox(
                   width: 18,
                 ),
                 Container(
                   width: 32,
                   height: 32,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     color: Color(0xffEAF0F6),
                     // Set the background color here
                     shape: BoxShape
                         .circle, // Shape of the button (you can also use BoxShape.rectangle for rectangular buttons)
                   ),
                   child: IconButton(
-                      padding: EdgeInsets.only(left: 1),
+                      padding:const EdgeInsets.only(left: 1),
                       style: ButtonStyle(
                         backgroundColor:
-                        MaterialStateProperty.all<Color>(Color(0xffC9C5FF)),
+                        MaterialStateProperty.all<Color>(const Color(0xffC9C5FF)),
                       ),
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(builder: (
-                            context) => MembersScreen()));
+                            context) =>const MembersScreen()));
                       },
-                      icon: Icon(
+                      icon:const Icon(
                         Icons.groups,
                         color: Colors.white,
                         size: 25,
                       )),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 5,
                 ),
-                Text(
+                const Text(
                   "All Members",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 115,
                 ),
                 TextButton(
                     onPressed: () {},
-                    child: Text(
+                    child:const Text(
                       "Change",
                       style: TextStyle(fontSize: 16),
                     ))
@@ -194,25 +212,25 @@ class _MenuScreenState extends State<MenuScreen> {
           ),
           Row(
             children: [
-              Spacer(),
+              const Spacer(),
               Text(
-                "Tue, Aug 31 2022",
+                DateFormat('yyyy-MM-dd').format(DateTime.now()),
                 style: TextStyle(color: Colors.grey[700]),
               ),
-              SizedBox(width: 8),
+              const SizedBox(width: 8),
               GestureDetector(
                 onTap: () {},
-                child: Icon(Icons.calendar_month),
+                child:const Icon(Icons.calendar_month),
               ),
             ],
           ),
-          Divider(),
+          const Divider(),
           Expanded(
             flex: 11,
             child: ListView.builder(
-              itemCount: members.length,
+              itemCount: loggedInMembers.length,
               itemBuilder: (context, index) {
-                Divider(
+                const Divider(
                   color: Colors.black,
                   thickness: 1,
                 );
@@ -221,41 +239,34 @@ class _MenuScreenState extends State<MenuScreen> {
                     ListTile(
                         title: Row(
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               radius: 20,
                               backgroundImage:
                               NetworkImage(""),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
-                            Text(members[index].name),
+                            Text(loggedInMembers[index].name),
                           ],
                         ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: Icon(Icons.calendar_today),
+                              icon:const Icon(Icons.calendar_today),
                               onPressed: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) =>
-                                //           RouteScreen(
-                                //               memberId: members[index].id)),
-                                // );
                               },
                             ),
                             IconButton(
-                              icon: Icon(Icons.location_on),
+                              icon:const Icon(Icons.location_on, color: Color(0xff4434A7),),
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           LocationScreen(
-                                              memberId: members[index].id)),
+                                              memberId: loggedInMembers[index].uuid)),
                                 );
                               },
                             ),
@@ -271,14 +282,14 @@ class _MenuScreenState extends State<MenuScreen> {
               },
             ),
           ),
-          Divider(),
+          const Divider(),
 
           // Show Map view button
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(12.0),
+              const Padding(
+                padding: EdgeInsets.all(12.0),
                 child: Text(
                   "Show Map View",
                   style: TextStyle(
@@ -292,8 +303,8 @@ class _MenuScreenState extends State<MenuScreen> {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => MapScreen()));
                 },
-                icon: Icon(Icons.arrow_forward_ios),
-                color: Color(0xff624DE3),
+                icon: const Icon(Icons.arrow_forward_ios),
+                color: const Color(0xff624DE3),
               ),
             ],
           ),
@@ -302,41 +313,29 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 }
-class Member {
-  String id;
-  String name;
 
-  Member({required this.id, required this.name});
+
+class UserService {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Fetch logged-in users from Firestore
+  Future<List<LogedInUser>> getLoggedInUsers() async {
+    try {
+      // Assuming users have a field 'isLoggedIn' set to true
+      QuerySnapshot querySnapshot = await _firestore
+          .collection('users')
+          .get();
+
+      // Map the Firestore data to Member objects
+      List<LogedInUser> members = querySnapshot.docs.map((doc) {
+        return LogedInUser.fromJson(doc.data() as Map<String, dynamic>);
+      }).toList();
+
+      return members;
+    } catch (e) {
+      return [];
+    }
+  }
 }
 
-class VisitedLocation {
-  LatLng position;
-  String address;
-  String time;
-  bool isStop;
-
-  VisitedLocation(
-      {required this.position,
-        required this.address,
-        required this.time,
-        required this.isStop});
-}
-
-List<Member> members = [
-  Member(id: "1", name: "Shakshi"),
-  Member(id: "2", name: "Kavita"),
-];
-
-List<VisitedLocation> visitedLocations = [
-  VisitedLocation(
-      position: LatLng(37.7749, -122.4194),
-      address: "Chuttmulpur",
-      time: "10:00 AM",
-      isStop: false),
-  VisitedLocation(
-      position: LatLng(37.7849, -122.4294),
-      address: "Khanpur",
-      time: "11:00 AM",
-      isStop: true),
-];
 

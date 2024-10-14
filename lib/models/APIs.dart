@@ -12,29 +12,22 @@ class APIs {
   //to return current user
   static User get users => auth.currentUser!;
 
-  // //for checking if user exit or not
-  // static Future<bool> userExits() async {
-  //   return (await firestore
-  //       .collection('users')
-  //       .doc(auth.currentUser!.email)
-  //       .get())
-  //       .exists;
-  // }
-
 //for checking a new user
   static Future<void> createUser() async {
    // final time = DateTime.now().millisecondsSinceEpoch.toString();
-   if(users!=null){
-     // Create a LogedInUser object with the current user's data
+   if(null!=users){
+     // Create a LoggedInUser object with the current user's data
     final user = LogedInUser(
         name: users.displayName.toString(),
         image: users.photoURL.toString(),
         email: users.email.toString(),
+        uuid: users.uid,
     );
-    // Create a LogedInUser object with the current user's data
+
+    // Create a LoggedInUser object with the current user's data
     return await firestore
         .collection('users')
-        .doc(users.email).set(user.toJson());
+        .doc(users.uid).set(user.toJson());
   }else{
      throw Exception("No logged-in user found.");
    }
