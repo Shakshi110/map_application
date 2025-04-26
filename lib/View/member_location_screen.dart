@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:vinove_demo/models/location_history.dart';
-import 'package:vinove_demo/route_screen.dart';
+import 'package:vinove_demo/View/route_screen.dart';
 
 class LocationScreen extends StatefulWidget {
   final String memberId;

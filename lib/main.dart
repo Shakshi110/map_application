@@ -2,8 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:vinove_demo/login_screen.dart';
-import 'package:vinove_demo/map_screen.dart';
+import 'package:vinove_demo/View/login_screen.dart';
+import 'package:vinove_demo/View/map_screen.dart';
 
 
 void main() async {

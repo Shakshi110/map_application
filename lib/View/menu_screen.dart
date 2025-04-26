@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:vinove_demo/map_screen.dart';
-import 'package:vinove_demo/members_screen.dart';
+import 'package:vinove_demo/View/map_screen.dart';
+import 'package:vinove_demo/View/members_screen.dart';
 import 'package:vinove_demo/models/user_data.dart';
 import 'member_location_screen.dart';
 

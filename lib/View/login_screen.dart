@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:vinove_demo/map_screen.dart';
+import 'package:vinove_demo/View/map_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vinove_demo/models/APIs.dart';
 
