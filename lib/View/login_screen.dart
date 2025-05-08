@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       // Call createUser to store user data in Firestore
-      await APIs.createUser();
+     // await APIs.createUser();
 
       Navigator.pushReplacement(
         context,
@@ -44,9 +44,19 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context) => MapScreen(),
         ),
       ); // Navigate to the home page on success
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        if (e.code == 'user-not-found') {
+          _errorMessage = 'Account does not exist. Please register first.';
+        } else if (e.code == 'wrong-password') {
+          _errorMessage = 'Incorrect password. Please try again.';
+        } else {
+          _errorMessage = e.message ?? 'Login failed. Please try again.';
+        }
+      });
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = 'An unexpected error occurred.';
       });
     }
   }
@@ -66,9 +76,19 @@ class _LoginScreenState extends State<LoginScreen> {
           builder: (context) => MapScreen(),
         ),
       ); // Navigate to home page on success
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        if (e.code == 'email-already-in-use') {
+          _errorMessage = 'This email is already registered. Please login instead.';
+        } else if (e.code == 'weak-password') {
+          _errorMessage = 'Password should be at least 6 characters.';
+        } else {
+          _errorMessage = e.message ?? 'Registration failed. Please try again.';
+        }
+      });
     } catch (e) {
       setState(() {
-        _errorMessage = e.toString();
+        _errorMessage = 'An unexpected error occurred.';
       });
     }
   }
@@ -76,36 +96,103 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: InputDecoration(labelText: "Email"),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: InputDecoration(labelText: "Password"),
-              obscureText: true,
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _loginWithEmailPassword,
-              child: Text("Login"),
-            ),
-            ElevatedButton(
-              onPressed: _registerWithEmailPassword,
-              child: Text("Register"),
-            ),
-            if (_errorMessage.isNotEmpty)
-              Text(
-                _errorMessage,
-                style: TextStyle(color: Colors.red),
+      appBar: AppBar(
+        title: Text("Welcome"),
+        centerTitle: true,
+        elevation: 0,
+      ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.all(24.0),
+            child: Card(
+              elevation: 8,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
               ),
-          ],
+              child: Padding(
+                padding: EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Text(
+                    //   "Welcome Back",
+                    //   style: TextStyle(
+                    //     fontSize: 24,
+                    //     fontWeight: FontWeight.bold,
+                    //   ),
+                    // ),
+                    SizedBox(height: 20),
+                    TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: "Email",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: Icon(Icons.email),
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    TextField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: "Password",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        prefixIcon: Icon(Icons.lock),
+                      ),
+                      obscureText: true,
+                    ),
+                    SizedBox(height: 24),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _loginWithEmailPassword,
+                        style: ElevatedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        child: Text(
+                          "Login",
+                          style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold,color: Colors.blue),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 12),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: _registerWithEmailPassword,
+                        style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                         // side: BorderSide(color: Theme.of(context).primaryColor),
+                        ),
+                        child: const Text(
+                          "Register",
+                          style: TextStyle(fontSize: 16,fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                    if (_errorMessage.isNotEmpty) ...[
+                      SizedBox(height: 16),
+                      Text(
+                        _errorMessage,
+                        style: TextStyle(color: Colors.red, fontSize: 14),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

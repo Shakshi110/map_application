@@ -3,19 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vinove_demo/View/map_screen.dart';
 import 'package:vinove_demo/View/members_screen.dart';
+import 'package:vinove_demo/View/menu_drawer.dart';
 import 'package:vinove_demo/models/user_data.dart';
 import 'member_location_screen.dart';
 
 
-class MenuScreen extends StatefulWidget {
-  const MenuScreen({super.key});
+class MembersList extends StatefulWidget {
+  const MembersList({super.key});
 
   @override
 
-  _MenuScreenState createState() => _MenuScreenState();
+  _MembersListState createState() => _MembersListState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
+class _MembersListState extends State<MembersList> {
   UserService userService = UserService();
   List<LogedInUser> loggedInMembers = [];
 
@@ -27,6 +28,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   Future<void> fetchLoggedInUsers() async {
     List<LogedInUser> members = await userService.getLoggedInUsers();
+    print('Fetched Members: ${members.length}'); //extra
     setState(() {
       loggedInMembers = members;
     });
@@ -43,118 +45,7 @@ class _MenuScreenState extends State<MenuScreen> {
       ),
       drawer: Visibility(
         visible: true,
-        child: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Color(0xff4434A7),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundImage:
-                      NetworkImage( ""// Replace with actual image URL
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Text(
-                      "User Name",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                    Text(
-                     "User Email" ,
-                      style: TextStyle(color: Colors.white70, fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-              ListTile(
-                leading: const Icon(Icons.timer),
-                title: const Text('Timer'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.calendar_today),
-                title: const Text('Attendance'),
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const MenuScreen()));
-                },
-              ),
-              ListTile(
-                leading: const Icon(Icons.pie_chart_outline),
-                title: const Text('Activity'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.list),
-                title: const Text('Timesheet'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.report),
-                title: const Text('Report'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.location_city),
-                title: const Text('Jobsite'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.group),
-                title: const Text('Team'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.time_to_leave),
-                title: const Text('Time off'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.schedule),
-                title: const Text('Schedules'),
-                onTap: () {},
-              ),
-              const Divider(),
-              ListTile(
-                leading: const Icon(Icons.person_add_alt_1),
-                title: const Text('Request to join Organization'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.lock),
-                title: const Text('Change Password'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading: const Icon(Icons.logout),
-                title:const Text('Logout'),
-                onTap: () {},
-              ),
-              const Divider(),
-              ListTile(
-                leading:const Icon(Icons.help_outline),
-                title:const Text('FAQ & Help'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading:const Icon(Icons.privacy_tip),
-                title:const Text('Privacy Policy'),
-                onTap: () {},
-              ),
-              ListTile(
-                leading:const Icon(Icons.info_outline),
-                title:const Text('Version: 2.10(1)'),
-                onTap: () {},
-              ),
-            ],
-          ),
-        ),
+        child: AppDrawer()
       ),
       body: Column(
         children: [
@@ -182,8 +73,8 @@ class _MenuScreenState extends State<MenuScreen> {
                         MaterialStateProperty.all<Color>(const Color(0xffC9C5FF)),
                       ),
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (
-                            context) =>const MembersScreen()));
+                        // Navigator.push(context, MaterialPageRoute(builder: (
+                        //     context) =>const MembersScreen()));
                       },
                       icon:const Icon(
                         Icons.groups,
@@ -239,10 +130,11 @@ class _MenuScreenState extends State<MenuScreen> {
                     ListTile(
                         title: Row(
                           children: [
-                            const CircleAvatar(
+                             CircleAvatar(
                               radius: 20,
-                              backgroundImage:
-                              NetworkImage(""),
+                              backgroundImage: loggedInMembers[index].image != null && loggedInMembers[index].image.isNotEmpty
+                                  ? NetworkImage(loggedInMembers[index].image)
+                                  : const NetworkImage('https://cdn-icons-png.flaticon.com/512/847/847969.png'),
                             ),
                             const SizedBox(
                               width: 5,
@@ -333,6 +225,7 @@ class UserService {
 
       return members;
     } catch (e) {
+      print('Error: $e'); // 👈 Add this
       return [];
     }
   }
